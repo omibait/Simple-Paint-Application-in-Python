@@ -46,30 +46,30 @@ class Paint(object):
 		self.root.mainloop()
 		
 	def pen(self):
-		self.canvas.bind('<B1-Motion>', self.motionP)
-		self.canvas.bind('<ButtonPress-1>',self.b1downP)
-		self.canvas.bind('<ButtonRelease-1>',self.b1upP)
+		self.canvas.bind('<B1-Motion>', self.motionPen)
+		self.canvas.bind('<ButtonPress-1>',self.on_button_pressPen)
+		self.canvas.bind('<ButtonRelease-1>',self.on_button_releasePen)
 		
 		
 	def draw_line(self):
-		self.canvas.bind("<ButtonPress-1>", self.on_button_pressL)
-		self.canvas.bind("<ButtonRelease-1>", self.on_button_releaseL)
+		self.canvas.bind("<ButtonPress-1>", self.on_button_pressLine)
+		self.canvas.bind("<ButtonRelease-1>", self.on_button_releaseLine)
 		
 		
 	def draw_rectangle(self):
-		self.canvas.bind("<ButtonPress-1>", self.on_button_pressR)
-		self.canvas.bind("<ButtonRelease-1>", self.on_button_releaseR)
+		self.canvas.bind("<ButtonPress-1>", self.on_button_pressRectangle)
+		self.canvas.bind("<ButtonRelease-1>", self.on_button_releaseRectangle)
 		
 		
 	def draw_circle(self):
-		self.canvas.bind("<ButtonPress-1>", self.on_button_pressC)
-		self.canvas.bind("<ButtonRelease-1>", self.on_button_releaseC)
+		self.canvas.bind("<ButtonPress-1>", self.on_button_pressCircle)
+		self.canvas.bind("<ButtonRelease-1>", self.on_button_releaseCircle)
 		
 		
 	def eraser(self):
-		self.canvas.bind('<B1-Motion>', self.motionE)
-		self.canvas.bind('<ButtonPress-1>',self.b1downE)
-		self.canvas.bind('<ButtonRelease-1>',self.b1upE)
+		self.canvas.bind('<B1-Motion>', self.motionEraser)
+		self.canvas.bind('<ButtonPress-1>',self.on_button_pressEraser)
+		self.canvas.bind('<ButtonRelease-1>',self.on_button_releaseEraser)
 		
 		
 	def clearScreen(self):
@@ -88,51 +88,51 @@ class Paint(object):
 			pass
 	
 
-	def on_button_pressL(self, event):
+	def on_button_pressLine(self, event):
 		self.x = event.x
 		self.y = event.y
 
 
-	def on_button_releaseL(self, event):
+	def on_button_releaseLine(self, event):
 		x0,y0 = (self.x, self.y)
 		x1,y1 = (event.x, event.y)
 		self.canvas.create_line(x0,y0,x1,y1)
 		
 
-	def on_button_pressR(self, event):
+	def on_button_pressRectangle(self, event):
 		self.x = event.x
 		self.y = event.y
 
-	def on_button_releaseR(self, event):
+	def on_button_releaseRectangle(self, event):
 		x0,y0 = (self.x, self.y)
 		x1,y1 = (event.x, event.y)
 		self.canvas.create_rectangle(x0,y0,x1,y1)
 		
 				
-	def on_button_pressC(self, event):
+	def on_button_pressCircle(self, event):
 		self.x = event.x
 		self.y = event.y
 
 
-	def on_button_releaseC(self, event):
+	def on_button_releaseCircle(self, event):
 		x0,y0 = (self.x, self.y)
 		x1,y1 = (event.x, event.y)
 		self.canvas.create_oval(x0,y0,x1,y1)
 		
 		
-	def b1downP(self,event):
+	def on_button_pressPen(self,event):
 		global b1
 		b1 = "down"          
 
 
-	def b1upP(self,event):
+	def on_button_releasePen(self,event):
 		global b1, xold, yold
 		b1 = "up"
 		xold = None         
 		yold = None
 
 
-	def motionP(self,event):
+	def motionPen(self,event):
 		if b1 == "down":
 			global xold, yold
 			if xold is not None and yold is not None:
@@ -141,26 +141,25 @@ class Paint(object):
 			yold = event.y
 			
 	
-	def b1downE(self,event):
+	def on_button_pressEraser(self,event):
 		global b1
 		b1 = "down"          
 
 
-	def b1upE(self,event):
+	def on_button_releaseEraser(self,event):
 		global b1, xold, yold
 		b1 = "up"
 		xold = None         
 		yold = None
 
 
-	def motionE(self,event):
+	def motionEraser(self,event):
 		if b1 == "down":
 			global xold, yold
 			if xold is not None and yold is not None:
 				event.widget.create_line(xold,yold,event.x,event.y,fill="white",width=10,smooth=TRUE)
 			xold = event.x
 			yold = event.y
-
 
 if __name__ == '__main__':
 	Paint()
